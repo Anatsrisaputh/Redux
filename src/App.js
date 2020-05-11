@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
 
-function App() {
+const mapStateToProps = state => {
+  return {counter: state.counter};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    IncrementCtr: () => dispatch({type: "INC_COUNTER"}),
+    DecrementCtr: () => dispatch({type: "DEC_COUNTER"}),
+    AddCtr: (number) => dispatch({type: "ADD_COUNTER+", value: number}),
+    SubtractCtr: (number) => dispatch({type: "SUB_COUNTER-", value: number})
+  }
+}
+
+function App(props) {
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  <div >{props.counter}</div>
+
+      <div>
+        <button onClick={props.IncrementCtr}>Increase</button>
+        <button onClick={props.DecrementCtr}>Declease</button>
+        <button onClick={()=> props.AddCtr(5)}>+ 5</button>
+        <button onClick={()=> props.SubtractCtr(5)}>- 5</button>
+      </div>
+
     </div>
   );
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps) (App);
